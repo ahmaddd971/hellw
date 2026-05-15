@@ -14,7 +14,7 @@ const getArgValue = (name) => {
 
 const count = Number.parseInt(getArgValue("--count") ?? "100", 10);
 const days = Number.parseInt(getArgValue("--days") ?? "365", 10);
-const perDay = Number.parseInt(getArgValue("--per-day") ?? "10", 10);
+const perDay = Number.parseInt(getArgValue("--per-day") ?? "2", 10);
 const shouldPush = args.includes("--push");
 const dryRun = args.includes("--dry-run");
 const fillYear = args.includes("--fill-year");

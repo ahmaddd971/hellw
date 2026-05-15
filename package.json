@@ -7,9 +7,9 @@
   "scripts": {
     "start": "node index.js",
     "preview": "node index.js --count 5 --dry-run",
-    "preview:fill-year": "node index.js --fill-year --days 365 --per-day 10 --dry-run",
-    "fill-year": "node index.js --fill-year --days 365 --per-day 10",
-    "fill-year:push": "node index.js --fill-year --days 365 --per-day 10 --push",
+    "preview:fill-year": "node index.js --fill-year --days 365 --per-day 2 --dry-run",
+    "fill-year": "node index.js --fill-year --days 365 --per-day 2",
+    "fill-year:push": "node index.js --fill-year --days 365 --per-day 2 --push",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

@@ -25,7 +25,7 @@ Create 10 commits and push them to the configured GitHub remote:
 npm start -- --count 10 --push
 ```
 
-Fill the last 365 UTC days with 10 commits per day:
+Fill the last 365 UTC days with 2 commits per day:
 
 ```bash
 npm run fill-year
@@ -44,7 +44,7 @@ npm run fill-year:push
 - `--push`: push after all commits are created.
 - `--fill-year`: create a dense contribution pattern instead of random dates.
 - `--days <number>`: how many UTC days to fill when using `--fill-year`. Default is `365`.
-- `--per-day <number>`: how many commits to create per UTC day when using `--fill-year`. Default is `10`.
+- `--per-day <number>`: how many commits to create per UTC day when using `--fill-year`. Default is `2`.
 
 ## Normal GitHub update flow
 
