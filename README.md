@@ -1,49 +1,48 @@
-# 🌱 goGreen 
+# 🌱 goGreen
 
-With **goGreen**, you can make your profile look like you've been hard at work... even if you haven't. 
-NodeJs script to make commits to the past (or the future) to go green on GitHub.
+`goGreen` is a small Node.js script that creates commits on chosen past dates so you can experiment with a GitHub contribution graph.
 
-## About
+## Quick start
 
-**goGreen** helps you create commits on your GitHub profile for any date in the past. Whether you want to fill up your contribution graph or even make cool patterns and artwork.
-
-## Getting Started
-
-Follow these steps to bring your contribution graph to life:
-
-1. **Clone this repository**
 ```bash
-git clone https://github.com/fenrir2608/goGreen.git
-cd goGreen
+npm install
+npm run preview
 ```
-3. **Set up your project**
-Initialize a new Node.js project:
+
+`npm run preview` shows the dates it would use without changing Git or pushing anything.
+
+## Create commits
+
+Create 10 local commits:
+
 ```bash
-npm init -y
-  ```
-3. **Install the required npm modules**
-You'll need a few modules to get everything running smoothly. Install them all with:
-  ```bash
-  npm install moment simple-git random
-  ```
-4. **Create your commit script**
-- Create a JavaScript file to manage your commits.
-- Create a JSON file to store all the commit timestamp data.
+npm start -- --count 10
+```
 
-## Room for Improvement
+Create 10 commits and push them to the configured GitHub remote:
 
-So, you've got the basics down. What's next?
+```bash
+npm start -- --count 10 --push
+```
 
-- **Custom Patterns:** Experiment with different patterns on your contribution graph. Maybe spell out your name or create some cool designs.
-- **Density Control:** Play around with the number of commits per day to adjust the shades of green.
-- **Input Strings:** Convert input strings to X-Y mapped contributions.
+## Options
 
-## npm Modules Used
+- `--count <number>`: how many commits to create. Default is `100`.
+- `--dry-run`: preview dates only; do not create commits.
+- `--push`: push after all commits are created.
 
-- [`moment`](https://www.npmjs.com/package/moment) - Handles date and time manipulation.
-- [`simple-git`](https://www.npmjs.com/package/simple-git) - For easy Git commands.
-- [`random`](https://www.npmjs.com/package/random) - To generate random numbers for the commits.
+## Normal GitHub update flow
 
-## Credits
+If you only want to upload code changes from this project to GitHub, use:
 
-Huge thanks to [Akshay Saini](https://github.com/akshaymarch7) for the original video behind this project.
+```bash
+git add .
+git commit -m "Describe your change"
+git push origin main
+```
+
+## Notes
+
+- The script updates `data.json` on every generated commit.
+- The GitHub remote is already configured in this repository.
+- Preview first if you are unsure; the script now waits for an explicit `--push` before publishing.

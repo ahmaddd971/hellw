@@ -1,40 +1,69 @@
 import jsonfile from "jsonfile";
 import moment from "moment";
-import simpleGit from "simple-git";
 import random from "random";
+import simpleGit from "simple-git";
 
-const path = "./data.json";
+const dataFile = "./data.json";
+const git = simpleGit();
+const args = process.argv.slice(2);
 
-const markCommit = (x, y) => {
-  const date = moment()
-    .subtract(1, "y")
-    .add(1, "d")
-    .add(x, "w")
-    .add(y, "d")
+const getArgValue = (name) => {
+  const index = args.indexOf(name);
+  return index === -1 ? undefined : args[index + 1];
+};
+
+const count = Number.parseInt(getArgValue("--count") ?? "100", 10);
+const shouldPush = args.includes("--push");
+const dryRun = args.includes("--dry-run");
+
+if (!Number.isInteger(count) || count < 1) {
+  console.error("Please provide a valid positive number with --count.");
+  process.exit(1);
+}
+
+const createRandomDate = () => {
+  const week = random.int(0, 54);
+  const day = random.int(0, 6);
+
+  return moment()
+    .subtract(1, "year")
+    .add(1, "day")
+    .add(week, "weeks")
+    .add(day, "days")
     .format();
-
-  const data = {
-    date: date,
-  };
-
-  jsonfile.writeFile(path, data, () => {
-    simpleGit().add([path]).commit(date, { "--date": date }).push();
-  });
 };
 
-const makeCommits = (n) => {
-  if(n===0) return simpleGit().push();
-  const x = random.int(0, 54);
-  const y = random.int(0, 6);
-  const date = moment().subtract(1, "y").add(1, "d").add(x, "w").add(y, "d").format();
-
-  const data = {
-    date: date,
-  };
-  console.log(date);
-  jsonfile.writeFile(path, data, () => {
-    simpleGit().add([path]).commit(date, { "--date": date },makeCommits.bind(this,--n));
-  });
+const writeCommit = async (date) => {
+  await jsonfile.writeFile(dataFile, { date });
+  await git.add([dataFile]);
+  await git.commit(date, undefined, { "--date": date });
 };
 
-makeCommits(100);
+const run = async () => {
+  for (let i = 0; i < count; i += 1) {
+    const date = createRandomDate();
+    console.log(`${dryRun ? "[preview]" : "[commit]"} ${date}`);
+
+    if (!dryRun) {
+      await writeCommit(date);
+    }
+  }
+
+  if (!dryRun && shouldPush) {
+    await git.push();
+  }
+
+  if (dryRun) {
+    console.log(`Previewed ${count} commit date(s).`);
+  } else if (shouldPush) {
+    console.log(`Created ${count} commit(s) and pushed them.`);
+  } else {
+    console.log(`Created ${count} local commit(s). Run again with --push when you are ready to publish.`);
+  }
+};
+
+run().catch((error) => {
+  console.error("The script stopped before finishing:");
+  console.error(error.message);
+  process.exit(1);
+});
